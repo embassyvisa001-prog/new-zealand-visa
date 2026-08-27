@@ -13,6 +13,7 @@ function EditAppplication({ onOpenFaq }) {
     Category: "",
     FullName: "",
     Email: "",
+    Password: "",
     Gender: "Male",
     Address: "",
     telephone: "",
@@ -71,6 +72,7 @@ function EditAppplication({ onOpenFaq }) {
         Category: client.Category || "",
         FullName: client.FullName || "",
         Email: client.Email || "",
+        Password: client.Password || "",
         Gender: client.Gender || "Male",
         Address: client.Address || "",
         telephone: client.telephone || "",
@@ -107,9 +109,10 @@ function EditAppplication({ onOpenFaq }) {
       !formData.Category ||
       !formData.FullName ||
       !formData.Email ||
+      !formData.Password ||
       !formData.PassportNumber
     ) {
-      setErrorMsg("Please fill in required fields (Category, Full Name, Email, Passport Number).");
+      setErrorMsg("Please fill in required fields (Category, Full Name, Email, Password, Passport Number).");
       return;
     }
 
@@ -255,6 +258,18 @@ function EditAppplication({ onOpenFaq }) {
                   className="form-control"
                   value={formData.Email}
                   onChange={(e) => handleChange("Email", e.target.value)}
+                  style={{ width: "100%", padding: "10px", marginTop: "4px" }}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="form-label" style={{ fontWeight: "600" }}>User Login Password *</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={formData.Password}
+                  onChange={(e) => handleChange("Password", e.target.value)}
                   style={{ width: "100%", padding: "10px", marginTop: "4px" }}
                   required
                 />

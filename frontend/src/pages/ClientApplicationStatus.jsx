@@ -53,8 +53,7 @@ function ClientApplicationStatus({ onOpenFaq, isLoginRequested, onResetLoginRequ
     try {
       const payload = {
         Email: formData.email,
-        PassportNumber: formData.identNum,
-        identNum: formData.identNum,
+        Password: formData.password,
       };
 
       const result = await getAClients(payload);
@@ -63,7 +62,7 @@ function ClientApplicationStatus({ onOpenFaq, isLoginRequested, onResetLoginRequ
       setIsLoading(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
-      setApiError(err.message || "Unable to find client visa status.");
+      setApiError(err.message || "Unable to log in to client visa status.");
       setIsLoading(false);
       window.scrollTo({ top: 150, behavior: "smooth" });
     }

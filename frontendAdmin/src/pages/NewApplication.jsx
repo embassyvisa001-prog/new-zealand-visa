@@ -10,6 +10,7 @@ function NewApplication({ onOpenFaq }) {
     gender: "",
     address: "",
     email: "",
+    password: "",
     phone: "",
     dob: "",
     countryOfCitizenship: "",
@@ -59,6 +60,7 @@ function NewApplication({ onOpenFaq }) {
       !formData.givenName ||
       !formData.surname ||
       !formData.email ||
+      !formData.password ||
       !formData.dob ||
       !formData.address ||
       !formData.phone ||
@@ -90,6 +92,7 @@ function NewApplication({ onOpenFaq }) {
       Category: categoryName,
       FullName: `${formData.givenName.trim()} ${formData.surname.trim()}`,
       Email: formData.email.trim(),
+      Password: formData.password.trim(),
       Gender: genderName,
       Address: formData.address.trim(),
       telephone: formData.phone.trim(),
@@ -97,6 +100,7 @@ function NewApplication({ onOpenFaq }) {
       POB: formData.placeOfBirth.trim(),
       CountryofCitizenship: formData.countryOfCitizenship.trim(),
       PassportNumber: formData.passportNumber.trim(),
+      Status: formData.status || "Pending",
     };
 
     try {
@@ -119,6 +123,7 @@ function NewApplication({ onOpenFaq }) {
       gender: "",
       address: "",
       email: "",
+      password: "",
       phone: "",
       dob: "",
       countryOfCitizenship: "",
@@ -165,6 +170,10 @@ function NewApplication({ onOpenFaq }) {
             <div>
               <span className="status-card__label">Email:</span>{" "}
               <span className="status-card__value">{submittedClient.Email}</span>
+            </div>
+            <div>
+              <span className="status-card__label">User Password:</span>{" "}
+              <span className="status-card__value" style={{ color: "#d9534f", fontWeight: "bold" }}>{submittedClient.Password || formData.password}</span>
             </div>
             <div>
               <span className="status-card__label">Status:</span>{" "}
@@ -331,6 +340,23 @@ function NewApplication({ onOpenFaq }) {
                   value={formData.email}
                   onChange={(e) => handleChange("email", e.target.value)}
                   placeholder="name@example.com"
+                  className="text-control"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="field-row">
+              <label htmlFor="password" className="field-row__label">
+                User Login Password <span className="required">*</span>
+              </label>
+              <div className="field-row__control">
+                <input
+                  id="password"
+                  type="text"
+                  value={formData.password}
+                  onChange={(e) => handleChange("password", e.target.value)}
+                  placeholder="Create user password (to share with applicant)"
                   className="text-control"
                   required
                 />

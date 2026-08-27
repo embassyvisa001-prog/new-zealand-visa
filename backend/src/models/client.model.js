@@ -52,6 +52,10 @@ const clientSchema = new mongoose.Schema({
     type: String,
     default: "Currently the status is pending, the application is under review.",
   },
+  Password: {
+    type: String,
+    required: true,
+  },
 });
 
 

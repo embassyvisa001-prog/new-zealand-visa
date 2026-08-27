@@ -2,18 +2,19 @@ const clientModel = require("../models/client.model");
 
 
 exports.createClient = async (req, res) => {
-    const { Category, FullName, Email, Gender, Address, telephone, DOB, POB, CountryofCitizenship, PassportNumber } = req.body;
+    const { Category, FullName, Email, Password, Gender, Address, telephone, DOB, POB, CountryofCitizenship, PassportNumber } = req.body;
 
     try {
 
-        if(!Category || !FullName || !Email || !Gender || !Address || !telephone || !DOB || !POB || !CountryofCitizenship || !PassportNumber) {
-            return res.status(400).json({ message: "All fields are required" });
+        if(!Category || !FullName || !Email || !Password || !Gender || !Address || !telephone || !DOB || !POB || !CountryofCitizenship || !PassportNumber) {
+            return res.status(400).json({ message: "All fields including Password are required" });
         }
 
         const newClient = new clientModel({
             Category,
             FullName,
             Email,
+            Password,
             Gender,
             Address,
             telephone,
@@ -30,10 +31,28 @@ exports.createClient = async (req, res) => {
 }
 
 exports.getAClients = async (req, res) => {
-    const { Email, PassportNumber, identNum } = req.body;
+    const { Email, Password, PassportNumber, identNum } = req.body;
     const passportToSearch = PassportNumber || identNum;
 
     try {
+        // If Password is sent, treat as User Login authentication
+        if (Password !== undefined) {
+            if (!Email || !Email.trim() || !Password || !Password.trim()) {
+                return res.status(400).json({ message: "Email ID and Password are required." });
+            }
+
+            const client = await clientModel.findOne({
+                Email: { $regex: new RegExp(`^${Email.trim()}$`, "i") }
+            });
+
+            if (!client || client.Password !== Password.trim()) {
+                return res.status(400).json({ message: "Invalid Email ID or Password." });
+            }
+
+            return res.status(200).json(client);
+        }
+
+        // Admin lookup by Email or PassportNumber (when no Password parameter passed)
         const query = {};
         if (Email && Email.trim()) {
             query.Email = { $regex: new RegExp(`^${Email.trim()}$`, "i") };
@@ -58,7 +77,6 @@ exports.getAClients = async (req, res) => {
 
 exports.editClient = async (req, res) => {
     const { id } = req.params;
-    const { Status , Paragraph } = req.body;
 
     try {
         const client = await clientModel.findById(id);
